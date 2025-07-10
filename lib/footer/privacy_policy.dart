@@ -21,6 +21,7 @@ class PrivacyPolicyBody extends StatelessWidget {
                   textStyle: const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.w700,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -28,7 +29,10 @@ class PrivacyPolicyBody extends StatelessWidget {
               Text(
                 'privacy_policy_contents'.tr(),
                 style: GoogleFonts.inter(
-                  textStyle: const TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white70,
+                  ),
                 ),
               ),
             ],

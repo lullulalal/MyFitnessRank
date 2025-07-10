@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MyFitnessRank',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.grey,
+        ),
       ),
       home: const MyFitnessRank(),
       localizationsDelegates: context.localizationDelegates,
@@ -47,6 +49,7 @@ class MyFitnessRank extends StatefulWidget {
 class _MyFitnessRankState extends State<MyFitnessRank> {
   Widget? _currentBody;
   int numberOfSports = 1;
+  final Color appColor = Colors.black;
 
   @override
   void didChangeDependencies() {
@@ -55,6 +58,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
       onFooterPageSelected: (widget) => setState(() {
         _currentBody = widget;
       }),
+      appColor: appColor,
     );
   }
 
@@ -66,6 +70,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
             onFooterPageSelected: (widget) => setState(() {
               _currentBody = widget;
             }),
+            appColor: appColor,
           );
         });
         break;
@@ -75,6 +80,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appColor,
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -82,13 +88,13 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
             SizedBox(
               height: 65,
               child: DrawerHeader(
-                decoration: BoxDecoration(color: Colors.redAccent),
+                decoration: BoxDecoration(color: appColor),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Sports',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.orbitron(
                         textStyle: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -115,11 +121,11 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
                 ),
                 title: Text(
                   'sport${index + 1}_header'.tr(),
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
+                  style: GoogleFonts.orbitron(
+                    textStyle: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color: appColor,
                     ),
                   ),
                 ),
@@ -130,7 +136,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: appColor,
         title: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -140,6 +146,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
                   onFooterPageSelected: (widget) => setState(() {
                     _currentBody = widget;
                   }),
+                  appColor: appColor,
                 );
               });
             },
@@ -147,12 +154,22 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
               children: [
                 const SizedBox(width: 12),
                 Text(
-                  'MyFitRank',
-                  style: GoogleFonts.inter(
+                  'MyFit',
+                  style: GoogleFonts.orbitron(
                     textStyle: const TextStyle(
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  'Rank',
+                  style: GoogleFonts.orbitron(
+                    textStyle: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.amber,
                     ),
                   ),
                 ),
@@ -164,7 +181,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.apps),
-              color: Colors.black87,
+              color: Colors.white,
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
               },
