@@ -23,7 +23,7 @@ class RunningContentsBody extends StatefulWidget {
 }
 
 class _RunningContentsBodyState extends State<RunningContentsBody> {
-  String selectedGender = 'Male';
+  String selectedGender = 'male';
   String selectedDistance = '5';
 
   final TextEditingController hourController = TextEditingController();
@@ -50,6 +50,80 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
 
   @override
   Widget build(BuildContext context) {
+    void showErrorDialog(String message) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            'error_dialog_title'.tr(),
+            style: GoogleFonts.inter(
+              textStyle: const TextStyle(
+                fontSize: 20,
+                color: Colors.redAccent,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          content: Text(
+            message,
+            style: GoogleFonts.inter(
+              textStyle: const TextStyle(
+                fontSize: 17,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'ok'.tr(),
+                style: GoogleFonts.inter(
+                  textStyle: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    void handleSubmit() {
+      final int hour = int.tryParse(hourController.text) ?? 0;
+      final int minute = int.tryParse(minuteController.text) ?? 0;
+      final int second = int.tryParse(secondController.text) ?? 0;
+      final int age = int.tryParse(ageController.text) ?? -1;
+      final int totalSeconds = hour * 3600 + minute * 60 + second;
+
+      if (totalSeconds == 0) {
+        showErrorDialog('running_time_err_msg'.tr());
+        return;
+      }
+
+      if (age < 5 || age > 120) {
+        showErrorDialog('age_err_msg'.tr());
+        return;
+      }
+
+      if (selectedMarathons.isEmpty) {
+        showErrorDialog('marathons_err_msg'.tr());
+        return;
+      }
+
+      print('Submitting:');
+      print('Time: $totalSeconds seconds');
+      print('Gender: $selectedGender');
+      print('Age: $age');
+      print('Distance: $selectedDistance');
+      print('Marathons: $selectedMarathons');
+
+      // TODO: Add GraphQL mutation here
+    }
+
     Widget footerLink(String label, VoidCallback onTap) {
       return MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -134,7 +208,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               child: TextField(
                                 controller: hourController,
                                 decoration: InputDecoration(
-                                  labelText: 'Hour',
+                                  labelText: 'hour'.tr(),
                                   labelStyle: GoogleFonts.inter(
                                     textStyle: const TextStyle(
                                       fontSize: 20,
@@ -157,7 +231,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               child: TextField(
                                 controller: minuteController,
                                 decoration: InputDecoration(
-                                  labelText: 'Min',
+                                  labelText: 'minute'.tr(),
                                   labelStyle: GoogleFonts.inter(
                                     textStyle: const TextStyle(
                                       fontSize: 20,
@@ -180,7 +254,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               child: TextField(
                                 controller: secondController,
                                 decoration: InputDecoration(
-                                  labelText: 'Sec',
+                                  labelText: 'second'.tr(),
                                   labelStyle: GoogleFonts.inter(
                                     textStyle: const TextStyle(
                                       fontSize: 20,
@@ -207,7 +281,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Distance:',
+                              'distance'.tr(),
                               style: GoogleFonts.inter(
                                 textStyle: const TextStyle(
                                   fontSize: 17,
@@ -251,7 +325,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                   ),
                                 ),
                                 DropdownMenuItem(
-                                  value: 'Half',
+                                  value: 'half',
                                   child: Text(
                                     '21.1 km(Half)',
                                     textAlign: TextAlign.center,
@@ -264,7 +338,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                   ),
                                 ),
                                 DropdownMenuItem(
-                                  value: 'Full',
+                                  value: 'full',
                                   child: Text(
                                     '42.2 km(Full)',
                                     textAlign: TextAlign.center,
@@ -287,7 +361,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Gender:',
+                              'gender'.tr(),
                               textAlign: TextAlign.center,
                               style: GoogleFonts.inter(
                                 textStyle: const TextStyle(
@@ -300,7 +374,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             Row(
                               children: [
                                 Radio(
-                                  value: 'Male',
+                                  value: 'male',
                                   groupValue: selectedGender,
                                   onChanged: (value) {
                                     setState(() {
@@ -309,7 +383,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                   },
                                 ),
                                 Text(
-                                  'Male',
+                                  'male'.tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
                                     textStyle: const TextStyle(
@@ -323,7 +397,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             Row(
                               children: [
                                 Radio(
-                                  value: 'Female',
+                                  value: 'female',
                                   groupValue: selectedGender,
                                   onChanged: (value) {
                                     setState(() {
@@ -332,7 +406,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                   },
                                 ),
                                 Text(
-                                  'Female',
+                                  'female'.tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
                                     textStyle: const TextStyle(
@@ -353,7 +427,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                           child: TextField(
                             controller: ageController,
                             decoration: InputDecoration(
-                              labelText: 'Age',
+                              labelText: 'age'.tr(),
                               labelStyle: GoogleFonts.inter(
                                 textStyle: const TextStyle(
                                   fontSize: 17,
@@ -394,11 +468,10 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                 );
 
                                 return StatefulBuilder(
-                                  // 🛠 wraps dialog in its own state
                                   builder: (context, setLocalState) {
                                     return AlertDialog(
                                       title: Text(
-                                        'Select Marathon(s) for Comparison',
+                                        'marathons_selection_title'.tr(),
                                         style: GoogleFonts.inter(
                                           textStyle: const TextStyle(
                                             fontSize: 20,
@@ -439,10 +512,10 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                           onPressed: () =>
                                               Navigator.pop(context, null),
                                           child: Text(
-                                            'Cancel',
+                                            'cancel'.tr(),
                                             style: GoogleFonts.inter(
                                               textStyle: const TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 17,
                                                 color: Colors.black87,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -455,10 +528,10 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                             tempSelection,
                                           ),
                                           child: Text(
-                                            'OK',
+                                            'ok'.tr(),
                                             style: GoogleFonts.inter(
                                               textStyle: const TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 17,
                                                 color: Colors.black87,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -479,9 +552,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             }
                           },
                           child: Text(
-                            selectedMarathons.isEmpty
-                                ? 'Select Reference Marathon(s)'
-                                : 'Reference Marathon(s): ${selectedMarathons.length}',
+                            'marathons_selection_button'.tr(),
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
                                 fontSize: 17,
@@ -516,33 +587,13 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             shape:
                                 WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      6,
-                                    ),
+                                    borderRadius: BorderRadius.circular(6),
                                   ),
                                 ),
                           ),
-                          onPressed: () {
-                            final int hour =
-                                int.tryParse(hourController.text) ?? 0;
-                            final int minute =
-                                int.tryParse(minuteController.text) ?? 0;
-                            final int second =
-                                int.tryParse(secondController.text) ?? 0;
-                            final int age =
-                                int.tryParse(ageController.text) ?? 0;
-                            final int totalSeconds =
-                                hour * 3600 + minute * 60 + second;
-
-                            // TODO: Replace with GraphQL mutation logic
-                            print('Submitting:');
-                            print('Time: $totalSeconds seconds');
-                            print('Gender: $selectedGender');
-                            print('Age: $age');
-                            print('Distance: $selectedDistance');
-                          },
+                          onPressed: handleSubmit,
                           child: Text(
-                            'Show My Running Rank!',
+                            'submit_button'.tr(),
                             style: GoogleFonts.inter(
                               textStyle: const TextStyle(
                                 fontSize: 20,
@@ -576,7 +627,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
               ),
             ),
 
-            // Section 3
+            // Section 4
             Container(
               width: double.infinity,
               color: widget.appColor,
@@ -597,7 +648,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                         value: context.locale,
                         underline: const SizedBox(),
                         focusColor: Colors.transparent,
-                        dropdownColor: Colors.black54,
+                        dropdownColor: Colors.black87,
                         items: const [
                           DropdownMenuItem(
                             value: Locale('en'),
