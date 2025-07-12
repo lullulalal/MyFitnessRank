@@ -215,7 +215,8 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
             ),
             percentText,
             TextSpan(
-              text: '${'title_by_gender_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_right'.tr()}',
+              text:
+                  '${'title_by_gender_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_right'.tr()}',
               style: GoogleFonts.inter(
                 textStyle: const TextStyle(
                   fontSize: 30,
@@ -241,7 +242,8 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
             ),
             percentText,
             TextSpan(
-              text: '${'title_by_gender_age_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_age_middle2'.tr()} $ageStart–$ageEnd${'title_by_gender_age_right'.tr()}',
+              text:
+                  '${'title_by_gender_age_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_age_middle2'.tr()} $ageStart–$ageEnd${'title_by_gender_age_right'.tr()}',
               style: GoogleFonts.inter(
                 textStyle: const TextStyle(
                   fontSize: 30,
@@ -584,134 +586,134 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                           ),
                         ),
 
-                        const SizedBox(height: 15),
+                        // const SizedBox(height: 15),
 
-                        // Marathon multi-select button
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 14,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: () async {
-                            final List<Map<String, String>> availableMarathons =
-                                marathonOptions[selectedDistance] ?? [];
+                        // // Marathon multi-select button
+                        // ElevatedButton(
+                        //   style: ElevatedButton.styleFrom(
+                        //     backgroundColor: Colors.white,
+                        //     padding: const EdgeInsets.symmetric(
+                        //       horizontal: 24,
+                        //       vertical: 14,
+                        //     ),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //   ),
+                        //   onPressed: () async {
+                        //     final List<Map<String, String>> availableMarathons =
+                        //         marathonOptions[selectedDistance] ?? [];
 
-                            final result = await showDialog<List<String>>(
-                              context: context,
-                              builder: (context) {
-                                List<String> tempSelection = List.from(
-                                  selectedMarathonKeys,
-                                );
+                        //     final result = await showDialog<List<String>>(
+                        //       context: context,
+                        //       builder: (context) {
+                        //         List<String> tempSelection = List.from(
+                        //           selectedMarathonKeys,
+                        //         );
 
-                                return StatefulBuilder(
-                                  builder: (context, setLocalState) {
-                                    return AlertDialog(
-                                      title: Text(
-                                        'marathons_selection_title'.tr(),
-                                        style: GoogleFonts.inter(
-                                          textStyle: const TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black87,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: Column(
-                                          children: availableMarathons.map((
-                                            marathon,
-                                          ) {
-                                            final name = marathon['name']!;
-                                            final key = marathon['key']!;
-                                            return CheckboxListTile(
-                                              value: tempSelection.contains(
-                                                key,
-                                              ),
-                                              title: Text(
-                                                name,
-                                                style: GoogleFonts.inter(
-                                                  textStyle: const TextStyle(
-                                                    fontSize: 17,
-                                                    color: Colors.black87,
-                                                  ),
-                                                ),
-                                              ),
-                                              onChanged: (checked) {
-                                                setLocalState(() {
-                                                  if (checked == true) {
-                                                    tempSelection.add(key);
-                                                  } else {
-                                                    tempSelection.remove(key);
-                                                  }
-                                                });
-                                              },
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ),
-                                      actionsAlignment:
-                                          MainAxisAlignment.center,
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, null),
-                                          child: Text(
-                                            'cancel'.tr(),
-                                            style: GoogleFonts.inter(
-                                              textStyle: const TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () => Navigator.pop(
-                                            context,
-                                            tempSelection,
-                                          ),
-                                          child: Text(
-                                            'ok'.tr(),
-                                            style: GoogleFonts.inter(
-                                              textStyle: const TextStyle(
-                                                fontSize: 17,
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            );
+                        //         return StatefulBuilder(
+                        //           builder: (context, setLocalState) {
+                        //             return AlertDialog(
+                        //               title: Text(
+                        //                 'marathons_selection_title'.tr(),
+                        //                 style: GoogleFonts.inter(
+                        //                   textStyle: const TextStyle(
+                        //                     fontSize: 20,
+                        //                     color: Colors.black87,
+                        //                     fontWeight: FontWeight.w700,
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //               content: SingleChildScrollView(
+                        //                 child: Column(
+                        //                   children: availableMarathons.map((
+                        //                     marathon,
+                        //                   ) {
+                        //                     final name = marathon['name']!;
+                        //                     final key = marathon['key']!;
+                        //                     return CheckboxListTile(
+                        //                       value: tempSelection.contains(
+                        //                         key,
+                        //                       ),
+                        //                       title: Text(
+                        //                         name,
+                        //                         style: GoogleFonts.inter(
+                        //                           textStyle: const TextStyle(
+                        //                             fontSize: 17,
+                        //                             color: Colors.black87,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                       onChanged: (checked) {
+                        //                         setLocalState(() {
+                        //                           if (checked == true) {
+                        //                             tempSelection.add(key);
+                        //                           } else {
+                        //                             tempSelection.remove(key);
+                        //                           }
+                        //                         });
+                        //                       },
+                        //                     );
+                        //                   }).toList(),
+                        //                 ),
+                        //               ),
+                        //               actionsAlignment:
+                        //                   MainAxisAlignment.center,
+                        //               actions: [
+                        //                 TextButton(
+                        //                   onPressed: () =>
+                        //                       Navigator.pop(context, null),
+                        //                   child: Text(
+                        //                     'cancel'.tr(),
+                        //                     style: GoogleFonts.inter(
+                        //                       textStyle: const TextStyle(
+                        //                         fontSize: 17,
+                        //                         color: Colors.black87,
+                        //                         fontWeight: FontWeight.w600,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //                 ElevatedButton(
+                        //                   onPressed: () => Navigator.pop(
+                        //                     context,
+                        //                     tempSelection,
+                        //                   ),
+                        //                   child: Text(
+                        //                     'ok'.tr(),
+                        //                     style: GoogleFonts.inter(
+                        //                       textStyle: const TextStyle(
+                        //                         fontSize: 17,
+                        //                         color: Colors.black87,
+                        //                         fontWeight: FontWeight.w600,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             );
+                        //           },
+                        //         );
+                        //       },
+                        //     );
 
-                            if (result != null) {
-                              setState(() {
-                                selectedMarathonKeys = result;
-                              });
-                            }
-                          },
+                        //     if (result != null) {
+                        //       setState(() {
+                        //         selectedMarathonKeys = result;
+                        //       });
+                        //     }
+                        //   },
 
-                          child: Text(
-                            'marathons_selection_button'.tr(),
-                            style: GoogleFonts.inter(
-                              textStyle: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ),
-                        ),
+                        //   child: Text(
+                        //     'marathons_selection_button'.tr(),
+                        //     style: GoogleFonts.inter(
+                        //       textStyle: const TextStyle(
+                        //         fontSize: 17,
+                        //         color: Colors.black87,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(height: 35),
 
                         // Submit button
