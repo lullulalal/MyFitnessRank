@@ -3,10 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
+import '../constants/api_constants.dart';
 import '../footer/privacy_policy.dart';
 import '../footer/terms_of_use.dart';
 import '../footer/cookie_preferences.dart';
+import './commons/histogram_chart.dart';
 
 class RunningContentsBody extends StatefulWidget {
   final void Function(Widget) onFooterPageSelected;
@@ -31,21 +35,31 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
   final TextEditingController secondController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
 
-  final List<String> allMarathons = [
-    'London Marathon',
-    'Boston Marathon',
-    'Berlin Marathon',
-    'Chicago Marathon',
-    'NYC Marathon',
-    'Tokyo Marathon',
-  ];
+  final Map<String, List<Map<String, String>>> marathonOptions = {
+    '5': [
+      {'name': 'Gold Coast Marathon 5km', 'key': 'GCM5'},
+    ],
+    '10': [
+      {'name': 'Gold Coast Marathon 10km', 'key': 'GCM10'},
+    ],
+    'half': [
+      {'name': 'Gold Coast Half Marathon', 'key': 'GCHM'},
+    ],
+    'full': [
+      {'name': 'Gold Coast Full Marathon', 'key': 'GCFM'},
+    ],
+  };
 
-  List<String> selectedMarathons = []; // default: all selected
+  List<String> selectedMarathonKeys = [];
+
+  Map<String, dynamic>? responseData;
 
   @override
   void initState() {
     super.initState();
-    selectedMarathons = List.from(allMarathons); // all selected by default
+
+    final initialMarathons = marathonOptions[selectedDistance] ?? [];
+    selectedMarathonKeys = initialMarathons.map((e) => e['key']!).toList();
   }
 
   @override
@@ -67,10 +81,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
           content: Text(
             message,
             style: GoogleFonts.inter(
-              textStyle: const TextStyle(
-                fontSize: 17,
-                color: Colors.black87,
-              ),
+              textStyle: const TextStyle(fontSize: 17, color: Colors.black87),
             ),
           ),
           actions: [
@@ -92,7 +103,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
       );
     }
 
-    void handleSubmit() {
+    void handleSubmit() async {
       final int hour = int.tryParse(hourController.text) ?? 0;
       final int minute = int.tryParse(minuteController.text) ?? 0;
       final int second = int.tryParse(secondController.text) ?? 0;
@@ -104,24 +115,146 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
         return;
       }
 
-      if (age < 5 || age > 120) {
+      if (age < 0 || age > 100) {
         showErrorDialog('age_err_msg'.tr());
         return;
       }
 
-      if (selectedMarathons.isEmpty) {
+      if (selectedMarathonKeys.isEmpty) {
         showErrorDialog('marathons_err_msg'.tr());
         return;
       }
 
-      print('Submitting:');
-      print('Time: $totalSeconds seconds');
-      print('Gender: $selectedGender');
-      print('Age: $age');
-      print('Distance: $selectedDistance');
-      print('Marathons: $selectedMarathons');
+      final Map<String, dynamic> requestBody = {
+        'record_seconds': totalSeconds.toDouble(),
+        'age': age,
+        'gender': selectedGender, // 'male' or 'female'
+        'distance': selectedDistance,
+        'target_races': selectedMarathonKeys, // List<String>
+      };
 
-      // TODO: Add GraphQL mutation here
+      try {
+        final response = await http.post(
+          Uri.parse(ApiConstants.running),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(requestBody),
+        );
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          setState(() {
+            responseData = data;
+          });
+        } else {
+          print('Error: ${response.statusCode}');
+          showErrorDialog('server_err_msg'.tr());
+        }
+      } catch (e) {
+        print('Exception: $e');
+        showErrorDialog('network_err_msg'.tr());
+      }
+    }
+
+    Widget buildTitleWidget(String resultType) {
+      final result = responseData![resultType];
+      final double userPercentile = result['user_percentile'];
+      final int ageStart = result['age_range_start'];
+      final int ageEnd = result['age_range_end'];
+      final rounded = userPercentile.round();
+
+      final percentText = TextSpan(
+        text: ' $rounded% ',
+        style: GoogleFonts.inter(
+          textStyle: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+            color: Colors.amber,
+          ),
+        ),
+      );
+
+      TextSpan fullText;
+      if (resultType == 'overall') {
+        fullText = TextSpan(
+          children: [
+            TextSpan(
+              text: 'title_overall_left'.tr(),
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            percentText,
+            TextSpan(
+              text: 'title_overall_right'.tr(),
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        );
+      } else if (resultType == 'by_gender') {
+        fullText = TextSpan(
+          children: [
+            TextSpan(
+              text: 'title_by_gender_left'.tr(),
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            percentText,
+            TextSpan(
+              text: '${'title_by_gender_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_right'.tr()}',
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        );
+      } else {
+        fullText = TextSpan(
+          children: [
+            TextSpan(
+              text: 'title_by_gender_age_left'.tr(),
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            percentText,
+            TextSpan(
+              text: '${'title_by_gender_age_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_age_middle2'.tr()} $ageStart–$ageEnd${'title_by_gender_age_right'.tr()}',
+              style: GoogleFonts.inter(
+                textStyle: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+
+      return RichText(text: fullText);
     }
 
     Widget footerLink(String label, VoidCallback onTap) {
@@ -150,7 +283,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
             // Section 1
             Container(
               width: double.infinity,
-              color: Colors.black,
+              color: widget.appColor,
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: Image.asset(
@@ -295,6 +428,12 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedDistance = value!;
+
+                                  final newMarathons =
+                                      marathonOptions[selectedDistance] ?? [];
+                                  selectedMarathonKeys = newMarathons
+                                      .map((e) => e['key']!)
+                                      .toList();
                                 });
                               },
                               items: [
@@ -327,7 +466,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                 DropdownMenuItem(
                                   value: 'half',
                                   child: Text(
-                                    '21.1 km(Half)',
+                                    'Half (21.098 km)',
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
                                       textStyle: const TextStyle(
@@ -340,7 +479,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                 DropdownMenuItem(
                                   value: 'full',
                                   child: Text(
-                                    '42.2 km(Full)',
+                                    'Full (42.195 km)',
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
                                       textStyle: const TextStyle(
@@ -460,11 +599,14 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             ),
                           ),
                           onPressed: () async {
+                            final List<Map<String, String>> availableMarathons =
+                                marathonOptions[selectedDistance] ?? [];
+
                             final result = await showDialog<List<String>>(
                               context: context,
                               builder: (context) {
                                 List<String> tempSelection = List.from(
-                                  selectedMarathons,
+                                  selectedMarathonKeys,
                                 );
 
                                 return StatefulBuilder(
@@ -482,22 +624,30 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                       ),
                                       content: SingleChildScrollView(
                                         child: Column(
-                                          children: allMarathons.map((
+                                          children: availableMarathons.map((
                                             marathon,
                                           ) {
+                                            final name = marathon['name']!;
+                                            final key = marathon['key']!;
                                             return CheckboxListTile(
                                               value: tempSelection.contains(
-                                                marathon,
+                                                key,
                                               ),
-                                              title: Text(marathon),
+                                              title: Text(
+                                                name,
+                                                style: GoogleFonts.inter(
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 17,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ),
+                                              ),
                                               onChanged: (checked) {
                                                 setLocalState(() {
                                                   if (checked == true) {
-                                                    tempSelection.add(marathon);
+                                                    tempSelection.add(key);
                                                   } else {
-                                                    tempSelection.remove(
-                                                      marathon,
-                                                    );
+                                                    tempSelection.remove(key);
                                                   }
                                                 });
                                               },
@@ -547,10 +697,11 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
 
                             if (result != null) {
                               setState(() {
-                                selectedMarathons = result;
+                                selectedMarathonKeys = result;
                               });
                             }
                           },
+
                           child: Text(
                             'marathons_selection_button'.tr(),
                             style: GoogleFonts.inter(
@@ -618,10 +769,42 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                   constraints: const BoxConstraints(maxWidth: 1400),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [],
-                    ),
+                    child: responseData == null
+                        ? const SizedBox()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              HistogramChart(
+                                title: buildTitleWidget('overall'),
+                                bins: (responseData!['overall']['bins'] as List)
+                                    .map((e) => HistogramBin.fromJson(e))
+                                    .toList(),
+                                width: 600,
+                                height: 300,
+                              ),
+                              const SizedBox(height: 30),
+                              HistogramChart(
+                                title: buildTitleWidget('by_gender'),
+                                bins:
+                                    (responseData!['by_gender']['bins'] as List)
+                                        .map((e) => HistogramBin.fromJson(e))
+                                        .toList(),
+                                width: 600,
+                                height: 300,
+                              ),
+                              const SizedBox(height: 30),
+                              HistogramChart(
+                                title: buildTitleWidget('by_gender_age'),
+                                bins:
+                                    (responseData!['by_gender_age']['bins']
+                                            as List)
+                                        .map((e) => HistogramBin.fromJson(e))
+                                        .toList(),
+                                width: 600,
+                                height: 300,
+                              ),
+                            ],
+                          ),
                   ),
                 ),
               ),
