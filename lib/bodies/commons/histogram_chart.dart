@@ -119,7 +119,7 @@ class HistogramChart extends StatelessWidget {
                     BarChartRodData(
                       toY: bin.percent,
                       color: bin.isUserBin ? Colors.amber : Colors.black,
-                      width: 14,
+                      width: 17,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(6),
                         topRight: Radius.circular(6),
