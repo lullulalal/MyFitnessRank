@@ -28,6 +28,7 @@ class RunningContentsBody extends StatefulWidget {
 
 class _RunningContentsBodyState extends State<RunningContentsBody> {
   String selectedGender = 'male';
+  String displayedGender = 'male';
   String selectedDistance = '5';
 
   final TextEditingController hourController = TextEditingController();
@@ -35,6 +36,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
   final TextEditingController secondController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
 
+  // Don't use right now, but keep it for future use
   final Map<String, List<Map<String, String>>> marathonOptions = {
     '5': [
       {'name': 'Gold Coast Marathon 5km', 'key': 'GCM5'},
@@ -144,6 +146,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
           final data = jsonDecode(response.body);
           setState(() {
             responseData = data;
+            displayedGender = selectedGender;
           });
         } else {
           print('Error: ${response.statusCode}');
@@ -216,7 +219,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
             percentText,
             TextSpan(
               text:
-                  '${'title_by_gender_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_right'.tr()}',
+                  '${'title_by_gender_middle'.tr()} ${displayedGender.tr()}${'title_by_gender_right'.tr()}',
               style: GoogleFonts.inter(
                 textStyle: const TextStyle(
                   fontSize: 30,
@@ -243,7 +246,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
             percentText,
             TextSpan(
               text:
-                  '${'title_by_gender_age_middle'.tr()} ${selectedGender.tr()}${'title_by_gender_age_middle2'.tr()} $ageStart–$ageEnd${'title_by_gender_age_right'.tr()}',
+                  '${'title_by_gender_age_middle'.tr()} ${displayedGender.tr()}${'title_by_gender_age_middle2'.tr()} $ageStart–$ageEnd${'title_by_gender_age_right'.tr()}',
               style: GoogleFonts.inter(
                 textStyle: const TextStyle(
                   fontSize: 30,
@@ -586,8 +589,8 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                           ),
                         ),
 
+                        // Don't use right now, but keep it for future use
                         // const SizedBox(height: 15),
-
                         // // Marathon multi-select button
                         // ElevatedButton(
                         //   style: ElevatedButton.styleFrom(
