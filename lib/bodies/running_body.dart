@@ -771,7 +771,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
               padding: const EdgeInsets.all(16.0),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1400),
+                  constraints: const BoxConstraints(maxWidth: 650),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: responseData == null
@@ -807,6 +807,16 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                                         .toList(),
                                 width: 600,
                                 height: 300,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'results_description'.tr(),
+                                style: GoogleFonts.inter(
+                                  textStyle: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -849,6 +859,13 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                             value: Locale('ko'),
                             child: Text(
                               '한국어',
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                          ),
+                          DropdownMenuItem(
+                            value: Locale('ja'),
+                            child: Text(
+                              '日本語',
                               style: TextStyle(color: Colors.white70),
                             ),
                           ),
