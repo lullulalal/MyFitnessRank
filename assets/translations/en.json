@@ -30,7 +30,7 @@
   "introduce_header": "How does your running rank?",
   "introduce_contents": "Compare your performance with runners around the world.",
   "sport1_header": "Running",
-  "bar_tooltip": "of runners averaged",
+  "bar_tooltip": "of runners\navg",
   "bar_tooltip_minute": "minutes",
   "privacy_policy_header": "Privacy Policy",
   "privacy_policy_contents": "We value your privacy. This service collects your running time, age, gender, and selected reference marathons only for the purpose of calculating your performance ranking.\n\nHowever, none of this information is stored on our servers. All data is used temporarily during the session and is discarded immediately after the result is shown.\n\nWe do not store, share, or track any user data. No analytics tools or third-party tracking technologies are used.\n\nIf you have any questions about this privacy policy, feel free to contact us.",
