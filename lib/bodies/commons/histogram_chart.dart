@@ -150,7 +150,7 @@ class HistogramChart extends StatelessWidget {
                             ((bin.timeRangeStart + bin.timeRangeEnd) / 2 / 60)
                                 .round();
                         return BarTooltipItem(
-                          '${bin.percent.toStringAsFixed(2)}% ${'bar_tooltip'.tr()} $avgMinutes ${'bar_tooltip_minute'.tr()}',
+                          '${bin.percent.toStringAsFixed(1)}% ${'bar_tooltip'.tr()} $avgMinutes ${'bar_tooltip_minute'.tr()}',
                           const TextStyle(color: Colors.white, fontSize: 12),
                         );
                       },
