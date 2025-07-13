@@ -1,11 +1,11 @@
 {
-    "name": "MyFitnessRank",
+    "name": "MyFitnessRank | See How Your Running Time Ranks Worldwide",
     "short_name": "MyFitnessRank",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "See how your running time ranks globally—based on real race data.",
+    "description": "Discover how your running time compares with runners around the world, using real race data from major global marathon events.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
