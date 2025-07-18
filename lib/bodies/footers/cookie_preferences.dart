@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class TermsOfUseBody extends StatelessWidget {
-  const TermsOfUseBody({super.key});
+import '../commons/common_footer.dart';
+
+class CookiePreferencesBody extends StatelessWidget {
+  final Color backgroundColor;
+
+  const CookiePreferencesBody({
+    super.key,
+    required this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,7 @@ class TermsOfUseBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'terms_of_use_header'.tr(),
+                'cookie_preferences_header'.tr(),
                 style: GoogleFonts.inter(
                   textStyle: const TextStyle(
                     fontSize: 36,
@@ -27,7 +34,7 @@ class TermsOfUseBody extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Text(
-                'terms_of_use_contents'.tr(),
+                'cookie_preferences_contents'.tr(),
                 style: GoogleFonts.inter(
                   textStyle: const TextStyle(
                     fontSize: 20,
@@ -35,6 +42,8 @@ class TermsOfUseBody extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 30),
+              CommonFooterBase(backgroundColor: backgroundColor),
             ],
           ),
         ),
