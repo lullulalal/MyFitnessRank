@@ -7,9 +7,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../constants/api_constants.dart';
-import '../footer/privacy_policy.dart';
-import '../footer/terms_of_use.dart';
-import '../footer/cookie_preferences.dart';
+import 'footers/privacy_policy.dart';
+import 'footers/terms_of_use.dart';
+import 'footers/cookie_preferences.dart';
 import './commons/histogram_chart.dart';
 
 class RunningContentsBody extends StatefulWidget {
@@ -812,9 +812,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               Text(
                                 'results_description'.tr(),
                                 style: GoogleFonts.inter(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                  ),
+                                  textStyle: const TextStyle(fontSize: 14),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -931,14 +929,20 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                     spacing: 24,
                     children: [
                       footerLink('privacy_policy_header'.tr(), () {
-                        widget.onFooterPageSelected(const PrivacyPolicyBody());
+                        widget.onFooterPageSelected(
+                          PrivacyPolicyBody(backgroundColor: widget.appColor),
+                        );
                       }),
                       footerLink('terms_of_use_header'.tr(), () {
-                        widget.onFooterPageSelected(const TermsOfUseBody());
+                        widget.onFooterPageSelected(
+                          TermsOfUseBody(backgroundColor: widget.appColor),
+                        );
                       }),
                       footerLink('cookie_preferences_header'.tr(), () {
                         widget.onFooterPageSelected(
-                          const CookiePreferencesBody(),
+                          CookiePreferencesBody(
+                            backgroundColor: widget.appColor,
+                          ),
                         );
                       }),
                     ],
