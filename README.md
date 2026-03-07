@@ -1,1 +1,1 @@
-# MyFitnessRank
+# MyRunRank

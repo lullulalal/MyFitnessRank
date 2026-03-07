@@ -1,6 +1,6 @@
 {
-    "name": "MyFitnessRank | See How Your Running Time Ranks Worldwide",
-    "short_name": "MyFitnessRank",
+    "name": "MyRunRank | See How Your Running Time Ranks Worldwide",
+    "short_name": "MyRunRank",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -13,8 +13,8 @@ jobs:
         with:
           channel: stable
       - name: Build flutter web app
-        run: flutter build web --release --base-href /MyFitnessRank/
+        run: flutter build web --release --base-href /MyRunRank/
       - name: Deploy to GitHub Pages
         uses: bluefireteam/flutter-gh-pages@v9
         with:
-          baseHref: /MyFitnessRank/
+          baseHref: /MyRunRank/

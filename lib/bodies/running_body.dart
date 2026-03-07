@@ -913,7 +913,7 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '© 2025 MyFitnessRank. All rights reserved.',
+                    '© 2025 MyRunRank. All rights reserved.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.inter(
                       textStyle: const TextStyle(

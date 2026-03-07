@@ -25,13 +25,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyFitnessRank',
+      title: 'MyRunRank',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.grey,
         ),
       ),
-      home: const MyFitnessRank(),
+      home: const MyRunRank(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
@@ -39,14 +39,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyFitnessRank extends StatefulWidget {
-  const MyFitnessRank({super.key});
+class MyRunRank extends StatefulWidget {
+  const MyRunRank({super.key});
 
   @override
-  State<MyFitnessRank> createState() => _MyFitnessRankState();
+  State<MyRunRank> createState() => _MyRunRankState();
 }
 
-class _MyFitnessRankState extends State<MyFitnessRank> {
+class _MyRunRankState extends State<MyRunRank> {
   Widget? _currentBody;
   int numberOfSports = 1;
   final Color appColor = Colors.black;
@@ -154,7 +154,7 @@ class _MyFitnessRankState extends State<MyFitnessRank> {
               children: [
                 const SizedBox(width: 12),
                 Text(
-                  'MyFit',
+                  'MyRun',
                   style: GoogleFonts.orbitron(
                     textStyle: const TextStyle(
                       fontSize: 25,
