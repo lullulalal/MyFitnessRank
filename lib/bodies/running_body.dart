@@ -515,52 +515,52 @@ class _RunningContentsBodyState extends State<RunningContentsBody> {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 'male',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  'male'.tr(),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.inter(
-                                    textStyle: const TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black87,
-                                    ),
+                            RadioGroup<String>(
+                              groupValue: selectedGender,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedGender = value!;
+                                });
+                              },
+                              child: Wrap(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Radio<String>(
+                                        value: 'male',
+                                      ),
+                                      Text(
+                                        'male'.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                          textStyle: const TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 'female',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value!;
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  'female'.tr(),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.inter(
-                                    textStyle: const TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black87,
-                                    ),
+                                  Row(
+                                    children: [
+                                      const Radio<String>(
+                                        value: 'female',
+                                      ),
+                                      Text(
+                                        'female'.tr(),
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                          textStyle: const TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                         const SizedBox(height: 15),
